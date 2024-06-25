@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
-const { default: mongoose } = require("mongoose");
 const cors = require("cors");
+const { default: mongoose, Schema } = require("mongoose");
 
 // initialize express app
 const app = express();
@@ -12,7 +12,17 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
 });
 
-// create mon
+// create mongoose schema
+
+//? User Model
+const userSchema = new Schema({
+  username: {
+    type: String,
+    required: true,
+  },
+});
+
+const User = model("User", userSchema);
 
 // Runs main function
 main().catch((err) => console.log(err));
