@@ -1,12 +1,13 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const { default: mongoose, Schema } = require("mongoose");
+const { default: mongoose, Schema, model } = require("mongoose");
 
 // initialize express app
 const app = express();
 
 app.use(cors());
+app.use(express.urlencoded({ extended: false }));
 app.use(express.static("public"));
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
@@ -35,7 +36,10 @@ async function main() {
   console.log("connected to MongoDB...");
 
   // POST /api/users  - create a new user
-  // app.post('/api/users')
+  app.post("/api/users", async (req, res) => {
+    const result = await User.create(req.body);
+    res.json(result);
+  });
 }
 
 const listener = app.listen(process.env.PORT || 3000, () => {
