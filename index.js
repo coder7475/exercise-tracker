@@ -66,8 +66,14 @@ async function main() {
   });
 
   // * POST /api/users/:_id/exercises
-  app.get("/api/users/:_id/exercises", (req, res) => {
+  app.post("/api/users/:_id/exercises", (req, res) => {
     const id = req.params._id;
+    console.log(id);
+    console.log(req.body);
+    res.json({
+      id,
+      body: req.body,
+    });
   });
 }
 
