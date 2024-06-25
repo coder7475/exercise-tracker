@@ -25,6 +25,24 @@ const userSchema = new Schema({
 
 const User = model("User", userSchema);
 
+// ? Exercise Model
+const exerciseSchema = new Schema({
+  username: {
+    type: "String",
+  },
+  date: {
+    type: "Date",
+  },
+  duration: {
+    type: "Number",
+  },
+  description: {
+    type: "String",
+  },
+});
+
+const Exercise = model("Exercise", exerciseSchema);
+
 // Runs main function
 main().catch((err) => console.log(err));
 
@@ -45,6 +63,11 @@ async function main() {
   app.get("/api/users", async (req, res) => {
     const result = await User.find();
     res.json(result);
+  });
+
+  // * POST /api/users/:_id/exercises
+  app.get("/api/users/:_id/exercises", (req, res) => {
+    const id = req.params._id;
   });
 }
 
