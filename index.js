@@ -40,6 +40,12 @@ async function main() {
     const result = await User.create(req.body);
     res.json(result);
   });
+
+  // Get /api/users - get all users
+  app.get("/api/users", async (req, res) => {
+    const result = await User.find();
+    res.json(result);
+  });
 }
 
 const listener = app.listen(process.env.PORT || 3000, () => {
