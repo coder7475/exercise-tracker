@@ -66,6 +66,7 @@ async function main() {
   });
 
   // * POST /api/users/:_id/exercises
+  // create a exercise in the database
   app.post("/api/users/:_id/exercises", async (req, res) => {
     // destruct the needed info
     const id = req.params._id;
@@ -93,6 +94,8 @@ async function main() {
 
     res.status(201).json(result);
   });
+
+  // GET /api/users/:_id/logs?[from][&to][&limit] -
 }
 
 const listener = app.listen(process.env.PORT || 3000, () => {
