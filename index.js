@@ -47,10 +47,10 @@ const Exercise = model("Exercise", exerciseSchema);
 main().catch((err) => console.log(err));
 
 async function main() {
-  await mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  // await mongoose.connect(process.env.MONGO_URI, {
+  //   useNewUrlParser: true,
+  //   useUnifiedTopology: true,
+  // });
   console.log("connected to MongoDB...");
 
   // POST /api/users  - create a new user
@@ -67,12 +67,21 @@ async function main() {
 
   // * POST /api/users/:_id/exercises
   app.post("/api/users/:_id/exercises", (req, res) => {
+    // destruct the needed info
     const id = req.params._id;
-    console.log(id);
-    console.log(req.body);
+    const { description, duration } = req.body;
+    // default date value set
+    let date = req.body.date;
+
+    if (!date) date = new Date().toDateString();
+
     res.json({
       id,
-      body: req.body,
+      body: {
+        description,
+        duration,
+        date,
+      },
     });
   });
 }
