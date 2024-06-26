@@ -47,16 +47,16 @@ const Exercise = model("Exercise", exerciseSchema);
 main().catch((err) => console.log(err));
 
 async function main() {
-  // await mongoose.connect(process.env.MONGO_URI, {
-  //   useNewUrlParser: true,
-  //   useUnifiedTopology: true,
-  // });
+  await mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
   console.log("connected to MongoDB...");
 
   // POST /api/users  - create a new user
   app.post("/api/users", async (req, res) => {
     const result = await User.create(req.body);
-    res.json(result);
+    res.status(201).json(result);
   });
 
   // Get /api/users - get all users
@@ -66,23 +66,32 @@ async function main() {
   });
 
   // * POST /api/users/:_id/exercises
-  app.post("/api/users/:_id/exercises", (req, res) => {
+  app.post("/api/users/:_id/exercises", async (req, res) => {
     // destruct the needed info
     const id = req.params._id;
     const { description, duration } = req.body;
     // default date value set
     let date = req.body.date;
 
-    if (!date) date = new Date().toDateString();
+    if (!date) date = new Date();
 
-    res.json({
-      id,
-      body: {
-        description,
-        duration,
-        date,
-      },
-    });
+    date.toDateString();
+
+    // find the user
+    const user = await User.findById(id);
+
+    // create exercise data
+    const exercise = {
+      username: user.username,
+      description,
+      duration,
+      date,
+    };
+
+    // create the exercise in data base
+    const result = await Exercise.create(exercise);
+
+    res.status(201).json(result);
   });
 }
 
