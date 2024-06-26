@@ -75,6 +75,7 @@ async function main() {
     let date = req.body.date;
 
     if (!date) date = new Date();
+    else date = new Date(date);
 
     date.toDateString();
 
@@ -95,7 +96,8 @@ async function main() {
     res.status(201).json(result);
   });
 
-  // GET /api/users/:_id/logs?[from][&to][&limit] -
+  // GET /api/users/:_id/logs?[from][&to][&limit]
+  app.get("/api/users/:_id/logs", async (req, res) => {});
 }
 
 const listener = app.listen(process.env.PORT || 3000, () => {
