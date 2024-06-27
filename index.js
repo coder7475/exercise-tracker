@@ -77,8 +77,6 @@ async function main() {
     if (!date) date = new Date();
     else date = new Date(date);
 
-    date.toDateString();
-
     // find the user
     const user = await User.findById(id);
 
@@ -92,8 +90,9 @@ async function main() {
     };
 
     // create the exercise in data base
-    const result = await Exercise.create(exercise);
-
+    const resx = await Exercise.create(exercise);
+    const { date: dat, ...data } = resx.toObject();
+    const result = { ...data, date: dat.toDateString() };
     res.status(201).json(result);
   });
 
