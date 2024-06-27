@@ -97,7 +97,13 @@ async function main() {
   });
 
   // GET /api/users/:_id/logs?[from][&to][&limit]
-  app.get("/api/users/:_id/logs", async (req, res) => {});
+  app.get("/api/users/:_id/logs", async (req, res) => {
+    const id = req.params._id;
+
+    res.json({
+      _id: id,
+    });
+  });
 }
 
 const listener = app.listen(process.env.PORT || 3000, () => {
