@@ -91,7 +91,7 @@ async function main() {
 
     // create the exercise in data base
     const resx = await Exercise.create(exercise);
-    const { date: dat, ...data } = resx.toObject();
+    const { date: dat, __v, ...data } = resx.toObject();
     const result = { ...data, date: dat.toDateString() };
     res.status(201).json(result);
   });
