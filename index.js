@@ -99,9 +99,12 @@ async function main() {
   // GET /api/users/:_id/logs?[from][&to][&limit]
   app.get("/api/users/:_id/logs", async (req, res) => {
     const id = req.params._id;
+    const user = await User.findById(id);
+    const username = user.username;
 
     res.json({
       _id: id,
+      username,
     });
   });
 }
