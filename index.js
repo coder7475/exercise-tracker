@@ -84,6 +84,7 @@ async function main() {
 
     // create exercise data
     const exercise = {
+      _id: id,
       username: user.username,
       description,
       duration,
@@ -101,10 +102,12 @@ async function main() {
     const id = req.params._id;
     const user = await User.findById(id);
     const username = user.username;
+    const exercises = await Exercise.find({ username });
 
     res.json({
       _id: id,
       username,
+      logs: exercises,
     });
   });
 }
