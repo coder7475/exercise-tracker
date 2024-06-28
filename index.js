@@ -102,12 +102,16 @@ async function main() {
     const user = await User.findById(id);
     const username = user.username;
     const exercises = await Exercise.find({ username });
-    
+    const log = exercises.map(e => ({
+      description: e.description,
+      duration: e.duration,
+      date: e.date.toDateString()
+    }))
     res.json({
       _id: id,
       username,
       count: exercises.length,
-      log: exercises,
+      log,
     });
   });
 }
