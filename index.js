@@ -102,11 +102,12 @@ async function main() {
     const user = await User.findById(id);
     const username = user.username;
     const exercises = await Exercise.find({ username });
-
+    
     res.json({
       _id: id,
       username,
-      logs: exercises,
+      count: exercises.length,
+      log: exercises,
     });
   });
 }
