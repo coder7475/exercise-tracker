@@ -99,9 +99,17 @@ async function main() {
   // GET /api/users/:_id/logs?[from][&to][&limit]
   app.get("/api/users/:_id/logs", async (req, res) => {
     const id = req.params._id;
+    const { from, to, limit } = req.query;
+    let dateObj = {}
+  if (from) {
+    dateObj["$gte"] = new Date(from)
+  }
+  if (to){
+    dateObj["$lte"] = new Date(to)
+  }
     const user = await User.findById(id);
     const username = user.username;
-    const exercises = await Exercise.find({ username });
+    const exercises = await Exercise.find({ username }).limit(limit);
     const log = exercises.map(e => ({
       description: e.description,
       duration: e.duration,
