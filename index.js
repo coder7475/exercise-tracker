@@ -81,8 +81,8 @@ async function main() {
     const user = await User.findById(id);
 
     // create exercise data
-    const exercise = {
-      _id: id,
+    const data = {
+      user_id: user._id,
       username: user.username,
       description,
       duration,
@@ -90,10 +90,14 @@ async function main() {
     };
 
     // create the exercise in data base
-    const resx = await Exercise.create(exercise);
-    const { date: dat, __v, ...data } = resx.toObject();
-    const result = { ...data, date: dat.toDateString() };
-    res.status(201).json(result);
+    const exercise = await Exercise.create(data);
+    res.json({
+      _id: user._id,
+      username: user.username,
+      description: exercise.description,
+      duration: exercise.duration,
+      date: new Date(exercise.date).toDateString()
+    })
   });
 
   // GET /api/users/:_id/logs?[from][&to][&limit]
@@ -109,7 +113,11 @@ async function main() {
   }
     const user = await User.findById(id);
     const username = user.username;
-    const exercises = await Exercise.find({ username }).limit(limit);
+    const filter = { username }
+    if(from || to){
+      filter.date = dateObj;
+    }
+    const exercises = await Exercise.find(filter).limit(limit);
     const log = exercises.map(e => ({
       description: e.description,
       duration: e.duration,
